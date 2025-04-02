@@ -1,21 +1,24 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import gdown
 import joblib
-import gdown  # For downloading from Google Drive
+import os
 
-# Google Drive file ID for the model
-file_id = "1cEhD4f1e9tryBVqlEAs0ZIwa_gcaAYIn"  # Replace with your actual Google Drive file ID
+# Define model file path
 model_path = "order_delivery_model.pkl"
 
-# Function to download the model from Google Drive
-@st.cache_resource
-def load_models():
+# Check if the model exists, else download
+if not os.path.exists(model_path):
+    file_id = "1cEhD4f1e9tryBVqlEAs0ZIwa_gcaAYIn"
     url = f"https://drive.google.com/uc?id={file_id}"
     gdown.download(url, model_path, quiet=False)
-    return joblib.load(model_path)
 
-rf, xgb = load_models()
+# Load the model
+rf, xgb = joblib.load(model_path)
+
+
+
 
 # Define the ensemble prediction function
 def ensemble_predict(X):
