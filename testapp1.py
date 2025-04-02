@@ -4,6 +4,7 @@ import numpy as np
 import gdown
 import joblib
 import os
+from PIL import Image
 
 # Define model file path
 model_path = "order_delivery_model.pkl"
@@ -32,10 +33,14 @@ def ensemble_predict(X):
 
 # Streamlit UI
 st.title("📦 Order Delivery Time Prediction")
+
+# Add image on top of input parameters
+image = Image.open("/mnt/data/supply_chain_optimisation.jpg")
+st.sidebar.image(image, use_column_width=True)
+
 st.sidebar.header("🔢 Input Parameters")
 
 # Input fields with reasonable ranges
-
 purchase_dow = st.sidebar.number_input("Purchased Day of the Week", 0, 6, 3)
 purchase_month = st.sidebar.number_input("Purchased Month", 1, 12, 1)
 year = st.sidebar.number_input("Purchased Year", 2018, 2025, 2018)
