@@ -34,9 +34,11 @@ def ensemble_predict(X):
 # Streamlit UI
 st.title("📦 Order Delivery Time Prediction")
 
-# Add image on top of input parameters
-image = Image.open("/mnt/data/supply_chain_optimisation.jpg")
-st.sidebar.image(image, use_column_width=True)
+# Load and display image from assets folder
+image_path = "assets/supply_chain_optimisation.jpg"
+if os.path.exists(image_path):
+    image = Image.open(image_path)
+    st.image(image, caption="Supply Chain Optimization", use_column_width=True)
 
 st.sidebar.header("🔢 Input Parameters")
 
