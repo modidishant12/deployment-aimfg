@@ -4,7 +4,7 @@ import numpy as np
 import gdown
 import joblib
 import os
-from PIL import Image
+
 # Define model file path
 model_path = "order_delivery_model.pkl"
 
@@ -35,10 +35,7 @@ st.title("📦 Order Delivery Time Prediction")
 st.sidebar.header("🔢 Input Parameters")
 
 # Input fields with reasonable ranges
-with st.sidebar:
-    img = Image.open("C:\\ai for mfg\\project\\Demo\\supply_chain_optimisation.jpg")
-    st.image(img)
-    st.header("Input Parameters")
+
 purchase_dow = st.sidebar.number_input("Purchased Day of the Week", 0, 6, 3)
 purchase_month = st.sidebar.number_input("Purchased Month", 1, 12, 1)
 year = st.sidebar.number_input("Purchased Year", 2018, 2025, 2018)
