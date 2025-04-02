@@ -17,13 +17,17 @@ if not os.path.exists(model_path):
 # Load the model
 rf, xgb = joblib.load(model_path)
 
-
-
+# Define feature names
+features = [
+    "purchase_dow", "purchase_month", "year", "product_size_cm3", "product_weight_g", 
+    "geolocation_state_customer", "geolocation_state_seller", "distance"
+]
 
 # Define the ensemble prediction function
 def ensemble_predict(X):
-    rf_pred = rf.predict(X)
-    xgb_pred = xgb.predict(X)
+    X_df = pd.DataFrame(X, columns=features)  # Ensure correct feature names
+    rf_pred = rf.predict(X_df)
+    xgb_pred = xgb.predict(X_df)
     return (rf_pred + xgb_pred) / 2
 
 # Streamlit UI
@@ -42,10 +46,10 @@ distance = st.sidebar.number_input("Distance (km)", 0.0, 5000.0, 475.35)
 
 # Prediction function
 def predict_wait_time():
-    input_data = np.array([[  # Convert input into a 2D array
+    input_data = [[  # Convert input into a list of lists
         purchase_dow, purchase_month, year, product_size_cm3, product_weight_g,
         geolocation_state_customer, geolocation_state_seller, distance
-    ]])
+    ]]
     prediction = ensemble_predict(input_data)
     return round(prediction[0])
 
