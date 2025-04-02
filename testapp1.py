@@ -35,7 +35,7 @@ def ensemble_predict(X):
 st.title("📦 Order Delivery Time Prediction")
 
 # Load and display image from assets folder
-image_path = "assets/supply_chain_optimisation.jpg"
+image_path = "supply_chain_optimisation.jpg"
 if os.path.exists(image_path):
     image = Image.open(image_path)
     st.image(image, caption="Supply Chain Optimization", use_column_width=True)
