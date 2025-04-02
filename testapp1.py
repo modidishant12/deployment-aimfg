@@ -39,7 +39,7 @@ st.sidebar.header("Supply Chain Optimization")
 image_path = "supply_chain_optimisation.jpg"  # Ensure image is in 'assets' folder
 if os.path.exists(image_path):
     image = Image.open(image_path)
-    st.sidebar.image(image, caption="Supply Chain Optimization", use_column_width=True)
+    st.sidebar.image(image, caption="Supply Chain Optimization", use_container_width=True)
 
 st.sidebar.header("🔢 Input Parameters")
 
