@@ -35,8 +35,8 @@ def ensemble_predict(X):
 st.title("📦 Order Delivery Time Prediction")
 
 # Sidebar UI
-st.sidebar.header("📷 Supply Chain Optimization")
-image_path = "assets/supply_chain_optimisation.jpg"  # Ensure image is in 'assets' folder
+st.sidebar.header("Supply Chain Optimization")
+image_path = "supply_chain_optimisation.jpg"  # Ensure image is in 'assets' folder
 if os.path.exists(image_path):
     image = Image.open(image_path)
     st.sidebar.image(image, caption="Supply Chain Optimization", use_column_width=True)
