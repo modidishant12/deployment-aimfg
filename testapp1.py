@@ -15,8 +15,12 @@ if not os.path.exists(model_path):
     url = f"https://drive.google.com/uc?id={file_id}"
     gdown.download(url, model_path, quiet=False)
 
-# Load the model
-rf, xgb = joblib.load(model_path)
+# Load the model safely
+try:
+    rf, xgb = joblib.load(model_path)
+except Exception as e:
+    st.error("Error loading model. Please check the model file.")
+    st.stop()
 
 # Define feature names
 features = [
@@ -26,17 +30,20 @@ features = [
 
 # Define the ensemble prediction function
 def ensemble_predict(X):
-    X_df = pd.DataFrame(X, columns=features)  # Ensure correct feature names
-    rf_pred = rf.predict(X_df)
-    xgb_pred = xgb.predict(X_df)
-    return (rf_pred + xgb_pred) / 2
+    try:
+        X_df = pd.DataFrame(X, columns=features)  # Ensure correct feature names
+        rf_pred = rf.predict(X_df)
+        xgb_pred = xgb.predict(X_df)
+        return (rf_pred + xgb_pred) / 2
+    except Exception as e:
+        st.error(f"Prediction error: {e}")
+        return [0]
 
 # Streamlit UI
 st.title("📦 Order Delivery Time Prediction")
 
-# Sidebar UI
-st.sidebar.header("Supply Chain Optimization")
-image_path = "supply_chain_optimisation.jpg"  # Ensure image is in 'assets' folder
+# Load and display image from assets folder
+image_path = "assets/supply_chain_optimisation.jpg"
 if os.path.exists(image_path):
     image = Image.open(image_path)
     st.sidebar.image(image, caption="Supply Chain Optimization", use_container_width=True)
@@ -55,15 +62,20 @@ distance = st.sidebar.number_input("Distance (km)", 0.0, 5000.0, 475.35)
 
 # Prediction function
 def predict_wait_time():
-    input_data = [[  # Convert input into a list of lists
-        purchase_dow, purchase_month, year, product_size_cm3, product_weight_g,
-        geolocation_state_customer, geolocation_state_seller, distance
-    ]]
-    prediction = ensemble_predict(input_data)
-    return round(prediction[0])
+    try:
+        input_data = [[  # Convert input into a list of lists
+            int(purchase_dow), int(purchase_month), int(year), float(product_size_cm3), float(product_weight_g),
+            int(geolocation_state_customer), int(geolocation_state_seller), float(distance)
+        ]]
+        prediction = ensemble_predict(input_data)
+        return round(prediction[0])
+    except Exception as e:
+        st.error(f"Error in prediction: {e}")
+        return None
 
 # Button to trigger prediction
 if st.sidebar.button("🚀 Predict Wait Time"):
     with st.spinner("Predicting..."):
         result = predict_wait_time()
-    st.sidebar.success(f"### ⏳ Predicted Delivery Time: **{result} days**")
+    if result is not None:
+        st.success(f"### ⏳ Predicted Delivery Time: **{result} days**")
