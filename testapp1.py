@@ -34,11 +34,12 @@ def ensemble_predict(X):
 # Streamlit UI
 st.title("📦 Order Delivery Time Prediction")
 
-# Load and display image from assets folder
-image_path = "supply_chain_optimisation.jpg"
+# Sidebar UI
+st.sidebar.header("📷 Supply Chain Optimization")
+image_path = "assets/supply_chain_optimisation.jpg"  # Ensure image is in 'assets' folder
 if os.path.exists(image_path):
     image = Image.open(image_path)
-    st.image(image, caption="Supply Chain Optimization", use_column_width=True)
+    st.sidebar.image(image, caption="Supply Chain Optimization", use_column_width=True)
 
 st.sidebar.header("🔢 Input Parameters")
 
@@ -65,4 +66,4 @@ def predict_wait_time():
 if st.sidebar.button("🚀 Predict Wait Time"):
     with st.spinner("Predicting..."):
         result = predict_wait_time()
-    st.success(f"### ⏳ Predicted Delivery Time: **{result} days**")
+    st.sidebar.success(f"### ⏳ Predicted Delivery Time: **{result} days**")
